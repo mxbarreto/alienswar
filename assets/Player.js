@@ -35,6 +35,9 @@ cc.Class({
     onLoad () {
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.keyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.keyUp, this);
+
+        const canvas = cc.find("Canvas");
+        canvas.on(cc.Node.EventType.MOUSE_MOVE, this.changeDirection, this);
     },
 
     start () {
@@ -48,14 +51,18 @@ cc.Class({
     },
 
     keyDown (event) {
-        if (event.keyCode == cc.KEY.a) {
+        if (event.keyCode == cc.macro.KEY.a) {
             this._accelerating = true;
         }
     },
 
     keyUp (event) {
-        if (event.keyCode == cc.KEY.a) {
+        if (event.keyCode == cc.macro.KEY.a) {
             this._accelerating = false;
         }
+    },
+
+    changeDirection (event) {
+        console.log(event);
     },
 });
