@@ -28,6 +28,7 @@ cc.Class({
         //     }
         // },
         _accelerating: false,
+        _direction: cc.Vec2,
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -36,8 +37,8 @@ cc.Class({
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.keyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.keyUp, this);
 
-        const canvas = cc.find("Canvas");
-        canvas.on(cc.Node.EventType.MOUSE_MOVE, this.changeDirection, this);
+        let canvas = cc.find("Canvas");
+        canvas.on("mousemove", this.changeDirection, this);
     },
 
     start () {
@@ -46,7 +47,7 @@ cc.Class({
 
     update (dt) {
         if (this._accelerating) {
-            this.node.x += 1;
+            this.node.position = this.node.position.add(this._direction);
         }
     },
 
@@ -63,6 +64,8 @@ cc.Class({
     },
 
     changeDirection (event) {
-        console.log(event);
+        let mousePosition = event.getLocation();
+        let direction = mousePosition.sub(this.node.position);
+        this._direction = direction.normalize();
     },
 });
